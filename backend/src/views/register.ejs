@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
-    <!-- Tailwind CSS para diseño rápido y moderno -->
+    <title>Registro de Administrador</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- SweetAlert2 para notificaciones -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    
+
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Iniciar Sesión</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Crear Cuenta</h2>
         
-        <form action="/" method="POST" class="space-y-4">
+        <form action="/register" method="POST" class="space-y-4">
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
                 <input type="email" id="email" name="email" required 
@@ -28,29 +25,17 @@
             </div>
 
             <button type="submit" 
-                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 font-semibold">
-                Ingresar
+                class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200 font-semibold">
+                Registrarse
             </button>
         </form>
 
-        <!-- Enlace para ir a Registro -->
+        <!-- Enlace para ir a Login -->
         <p class="mt-6 text-sm text-center text-gray-600">
-            ¿No tenes cuenta? 
-            <a href="/register" class="text-blue-600 hover:underline font-medium">Regístrate aquí</a>
+            ¿Ya tenes cuenta? 
+            <a href="/" class="text-blue-600 hover:underline font-medium">Inicia sesión</a>
         </p>
     </div>
-    <script>
-        const backendError = "<%= typeof error !== 'undefined' && error ? error : '' %>";
-        if (backendError) {
-            Swal.fire({
-                icon: 'error',
-                title: '¡Oops!',
-                text: backendError,
-                confirmButtonColor: '#2563eb', // Color azul que combina con tu botón de Tailwind
-                confirmButtonText: 'Entendido'
-            });
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    </script>
+
 </body>
 </html>
