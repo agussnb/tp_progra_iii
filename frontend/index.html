@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMICMUNDO</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-text">COMICMUNDO</span>
+    </div>
+    
+    <div class="nav-links">
+      <button id="botonAdmin" class="nav-boton nav-boton-admin">🔐 ADMIN</button>
+      <button id="botonTema" class="nav-boton nav-boton-tema">🌙 MODO OSCURO</button>
+    </div>
+  </nav>
+  <main class="main-content">
+    <div class="bienvenida-container">
+      <div class="bienvenida-card">
+        <h1 class="bienvenida-titulo">Bienvenido a COMICMUNDO!</h1>
+        <p class="bienvenida-subtitulo">Ingresa tu nombre</p>
+        
+        <div class="bienvenida-form">
+          <input type="text" id="nombreInput" class="nombre-input" 
+                 placeholder="Tu nombre" maxlength="50" autocomplete="off">
+          <button id="continuarBoton" class="continuar-boton" disabled>Continuar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>Ivan Klimkowski - Agustín Barrero</p>
+  </footer>
+</body>
+</html>

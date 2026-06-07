@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMICMUNDO</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+</head>
+<body class="grilla">
+  <nav class="navbar">
+  <div class="logo">
+    <span class="logo-text">COMICMUNDO</span>
+  </div>
+  <div class="nav-links">
+    <button id="botonCarrito" class="nav-boton">CARRITO</button>
+    <button id="botonTema" class="nav-boton nav-boton-tema">TEMA OSCURO</button>
+  </div>
+</nav>
+
+  <main class="main-content">
+    <div class="productos-container">
+      
+      <div class="filtros">
+        <button class="filtro-boton" data-categoria="todos">Todos</button>
+        <button class="filtro-boton" data-categoria="marvel">MARVEL</button>
+        <button class="filtro-boton" data-categoria="dc">DC</button>
+      </div>
+      
+      <div id="productosGrid" class="productos-grid">
+      </div>
+      
+      <div class="paginacion">
+        <button id="botonAnterior" class="pagina-boton" disabled>Página Anterior</button>
+        <span id="paginaInfo" class="pagina-info">Página 1</span>
+        <button id="botonSiguiente" class="pagina-boton">Página Siguiente</button>
+      </div>
+      
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Ivan Klimkowski - Agustín Barrero</p>
+  </footer>
+
+  <div id="carritoFlotante" class="carrito-flotante">
+  <img src="img/shopping-cart.png" alt="Carrito" class="carrito-icono">
+  <span id="carritoFlotanteCount">0</span>
+</div>
+  <script type="module" src="js/pages/productos.js"></script>
+</body>
+</html>
