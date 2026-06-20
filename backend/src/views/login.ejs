@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <!-- Tailwind CSS para diseño rápido y moderno -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- SweetAlert2 para notificaciones -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -14,7 +12,7 @@
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Iniciar Sesión</h2>
         
-        <form action="/" method="POST" class="space-y-4">
+        <form id="login-form" class="space-y-4">
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
                 <input type="email" id="email" name="email" required 
@@ -33,24 +31,69 @@
             </button>
         </form>
 
-        <!-- Enlace para ir a Registro -->
         <p class="mt-6 text-sm text-center text-gray-600">
             ¿No tenes cuenta? 
             <a href="/register" class="text-blue-600 hover:underline font-medium">Regístrate aquí</a>
         </p>
     </div>
+
     <script>
-        const backendError = "<%= typeof error !== 'undefined' && error ? error : '' %>";
-        if (backendError) {
-            Swal.fire({
-                icon: 'error',
-                title: '¡Oops!',
-                text: backendError,
-                confirmButtonColor: '#2563eb', // Color azul que combina con tu botón de Tailwind
-                confirmButtonText: 'Entendido'
-            });
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
+        const form = document.getElementById('login-form');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evita que la página se recargue
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Modificá la URL '/api/auth/login' si le pusiste otra ruta en tu enrutador
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Si las credenciales fallan, mostramos el SweetAlert con el mensaje que manda el controlador
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Oops!',
+                        text: data.message || 'Credenciales inválidas.',
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'Entendido'
+                    });
+                } else {
+                    // ¡Login exitoso! Guardamos el token JWT en el navegador
+                    localStorage.setItem('adminToken', data.token);
+                    
+                    // Mostramos cartel de éxito temporal antes de mover la pantalla
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Bienvenido!',
+                        text: 'Inicio de sesión correcto.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    // Hacemos la redirección que querías hacia el dashboard
+                    setTimeout(() => {
+                        window.location.href = '/admin/dashboard';
+                    }, 1500);
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo comunicar con el servidor.',
+                    confirmButtonColor: '#2563eb'
+                });
+            }
+        });
     </script>
 </body>
 </html>

@@ -1,23 +1,33 @@
-import {Router} from 'express';
-import { isAuthenticated } from '../middlewares/auth.js';
-import {
-    getProducts, 
+import { Router } from 'express';
+import { verifyToken } from '../middlewares/auth.js';
+
+import { 
+    getLogs, 
+    getLogsView, 
+    getProductsView,
+    getUpdateView 
+} from '../controllers/adminController.js';
+
+import { 
     createProduct, 
-    getLogs,
     updateProduct, 
-    deleteProduct } from '../controllers/adminController.js';
+    deleteProduct 
+} from '../controllers/productController.js';
+
 import { getDashboard } from '../controllers/dashboardController.js';
+import upload from '../middlewares/multerConfig.js'; 
 
 const router = Router();
-router.use(isAuthenticated); 
-router.get('/dashboard', getDashboard);
-router.get('/logs', getLogs);
-router.get('/productos', getProducts);
-//POSTS
-router.post('/productos', createProduct);
-//PUTS
-router.put('/productos/:id', updateProduct);
-//DELETES
-router.delete('/productos/:id', deleteProduct);
+
+router.get('/dashboard', getDashboard); 
+router.get('/logs', getLogsView); 
+router.get('/productos', getProductsView); 
+router.get('/productos/:id', getUpdateView); // Muestra el formulario de edición
+
+router.get('/api/logs', verifyToken, getLogs);
+
+router.post('/productos', verifyToken, upload.single('image'), createProduct); 
+router.put('/productos/:id', verifyToken, upload.single('image'), updateProduct); 
+router.delete('/productos/:id', verifyToken, deleteProduct); 
 
 export default router;

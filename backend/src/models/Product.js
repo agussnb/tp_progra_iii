@@ -27,6 +27,11 @@ const Product = sequelize.define('Product', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
+  },
+  stock:{
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
   }
 });
 

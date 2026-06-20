@@ -1,10 +1,12 @@
 import Order from '../models/Order.js';
-import Product from '../models/Product.js';
+import { Product } from '../models/index.js';
 import OrderDetail from '../models/OrderDetail.js';
-import database from '../config/database.js'; // Importamos la instancia para usar transacciones
+import Log from '../models/Logs.js';
+import database from '../config/database.js'; 
 
 export const createSale = async (req, res) => {
-  const t = await database.sequelize.transaction();
+
+  const t = await database.transaction();
 
   try {
     const { clientName, products } = req.body; 
@@ -16,7 +18,7 @@ export const createSale = async (req, res) => {
     const itemsToInsert = [];
 
     for (const item of products) {
-      const productInDb = await Product.findByPk(item.id);
+      const productInDb = await Product.findByPk(item.id, { transaction: t });
 
       if (!productInDb) {
         await t.rollback();
@@ -27,6 +29,16 @@ export const createSale = async (req, res) => {
         await t.rollback();
         return res.status(400).json({ message: `El producto ${productInDb.name} no está disponible para la venta.` });
       }
+
+      if (productInDb.stock < item.quantity) {
+        await t.rollback();
+        return res.status(400).json({ 
+          message: `Stock insuficiente para "${productInDb.name}". Disponible: ${productInDb.stock}, Solicitado: ${item.quantity}` 
+        });
+      }
+
+      productInDb.stock -= item.quantity;
+      await productInDb.save({ transaction: t });
 
       const subtotal = productInDb.price * item.quantity;
       calculatedTotalPrice += subtotal;
@@ -50,9 +62,16 @@ export const createSale = async (req, res) => {
 
     await OrderDetail.bulkCreate(detailsWithOrderId, { transaction: t });
 
+    await Log.create({
+      action: 'VENTA',
+      description: `Nueva venta registrada ID: ${newOrder.id} - Cliente: ${clientName} - Total: $${calculatedTotalPrice}`,
+      user: req.user ? req.user.email : 'Admin' 
+    }, { transaction: t });
+
     await t.commit();
 
     return res.status(201).json({
+      success: true,
       message: 'Compra procesada con éxito.',
       orderId: newOrder.id,
       clientName: newOrder.clientName,
@@ -62,6 +81,7 @@ export const createSale = async (req, res) => {
 
   } catch (error) {
     await t.rollback();
+    console.error('Error en createSale:', error);
     return res.status(500).json({ message: 'Error al procesar la venta.', error: error.message });
   }
 };
@@ -83,6 +103,7 @@ export const getSales = async (req, res) => {
 
     return res.status(200).json(sales);
   } catch (error) {
+    console.error('Error en getSales:', error);
     return res.status(500).json({ message: 'Error al obtener el listado de ventas.', error: error.message });
   }
 };

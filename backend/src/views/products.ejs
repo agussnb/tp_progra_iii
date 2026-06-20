@@ -1,0 +1,270 @@
+<%- include('partials/header') %>
+<div class="container-fluid min-vh-100 bg-light px-0">
+    <div class="row g-0">
+        <aside class="col-12 col-md-3 col-xl-2 bg-dark min-vh-100">
+            <%- include('partials/sidebar') %>
+        </aside>
+
+        <main class="col-12 col-md-9 col-xl-10 p-4">
+
+            <div class="mb-4">
+                <h1 class="h2 fw-bold text-dark">Gestión de Inventario</h1>
+                <p class="text-muted">Administrá los productos, modificá sus estados o agregá nuevos al catálogo.</p>
+            </div>
+
+            <div class="row g-4 align-items-start">
+
+                <div class="col-12 col-lg-8">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                            <h5 class="m-0 fw-bold text-secondary">Listado de Productos</h5>
+                            <span class="badge bg-primary rounded-pill">
+                                <%= products.length %> Productos totales
+                            </span>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light sticky-top">
+                                    <tr>
+                                        <th scope="col" class="px-3 py-3">Producto</th>
+                                        <th scope="col" class="py-3">Precio</th>
+                                        <th scope="col" class="py-3">Cantidad</th>
+                                        <th scope="col" class="py-3">Estado</th>
+                                        <th scope="col" class="py-3 text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (products && products.length > 0) { %>
+                                        <% products.forEach(producto => { %>
+                                            <tr>
+                                                <td class="px-3 py-3 font-medium">
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <img src="<%= producto.image || '/img/placeholder.png' %>"
+                                                            alt="<%= producto.name %>"
+                                                            class="rounded object-fit-cover border"
+                                                            style="width: 45px; height: 45px;">
+                                                        <span class="fw-semibold text-dark">
+                                                            <%= producto.name %>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td class="fw-bold text-dark">
+                                                    $<%= Number(producto.price).toLocaleString('es-AR') %>
+                                                </td>
+                                                <td>
+                                                    <span class="<%= producto.cantidad <= 5 ? 'text-danger fw-bold' : 'text-muted' %>">
+                                                        <%= producto.stock %> u.
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <% if (producto.active) { %>
+                                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5">Activo</span>
+                                                    <% } else { %>
+                                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2.5">Inactivo</span>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="d-flex justify-content-center gap-2">
+                                                        <a href="/admin/productos/<%= producto.id %>" class="btn btn-sm btn-success d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1.5 fw-medium">
+                                                            <i class="bi bi-pencil-square"></i> Modificar
+                                                        </a>
+                                                        <button onclick="eliminarProducto('<%= producto.id %>', '<%= producto.name %>')" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1.5 fw-medium">
+                                                            <i class="bi bi-trash"></i> Eliminar
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5 text-muted">
+                                                <i class="bi bi-box-seam display-6 d-block mb-3 text-light"></i>
+                                                No hay productos registrados en este momento.
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <div class="card shadow-sm border-0 sticky-xl-top" style="top: 24px;">
+                        <div class="card-header bg-white py-3 border-bottom">
+                            <h5 class="m-0 fw-bold text-secondary">Crear Producto</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="formCrearProducto" enctype="multipart/form-data" class="needs-validation">
+
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label small fw-bold text-uppercase text-muted">Nombre del Producto</label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Ej: The Amazing Spiderman #1">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="precio" class="form-label small fw-bold text-uppercase text-muted">Precio ($)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">$</span>
+                                        <input type="number" id="precio" name="precio" step="0.01" class="form-control" required placeholder="0.00">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="cantidad" class="form-label small fw-bold text-uppercase text-muted">Cantidad / Stock</label>
+                                    <input type="number" id="cantidad" name="cantidad" class="form-control" required placeholder="0">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="categoria" class="form-label small fw-bold text-uppercase text-muted">Categoría / Editorial</label>
+                                    <select id="categoria" name="categoria" class="form-select text-secondary" required>
+                                        <option value="" disabled selected>Seleccioná una opción</option>
+                                        <option value="Marvel">Marvel</option>
+                                        <option value="DC">DC Comics</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="image" class="form-label small fw-bold text-uppercase text-muted">Imagen del Producto</label>
+                                    <input type="file" id="image" name="image" accept="image/*" class="form-control text-muted">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary py-2.5 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 w-100">
+                                    <i class="bi bi-plus-circle"></i> Guardar Producto
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<style>
+    .no-caret::after { display: none !important; }
+    .dropdown-toggle:focus { box-shadow: none !important; }
+    /* Chrome, Safari, Edge, Opera: Ocultar flechas en inputs de tipo número */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox: Ocultar flechas */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const obtenerToken = () => localStorage.getItem('adminToken');
+    document.getElementById('formCrearProducto').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const token = obtenerToken();
+        const formData = new FormData(e.target);
+
+        // Ajuste manual por si en el backend usás "stock" en vez de "cantidad"
+        if (formData.has('cantidad') && !formData.has('stock')) {
+            formData.append('stock', formData.get('cantidad'));
+        }
+
+        try {
+            const response = await fetch('/admin/productos', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                manejarSesionExpirada();
+                return;
+            }
+
+            const data = await response.json();
+
+            if (response.ok) {
+                Swal.fire({
+                    title: '¡Creado!',
+                    text: data.message || 'El producto se registró correctamente.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                setTimeout(() => window.location.reload(), 1500);
+            } else {
+                Swal.fire('Error', data.message || 'No se pudo crear el producto.', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire('Error', 'Hubo un problema de red.', 'error');
+        }
+    });
+
+    function eliminarProducto(id, nombre) {
+        Swal.fire({
+            title: `¿Estás seguro de desactivar ${nombre}?`,
+            text: "El producto cambiará su estado a inactivo en el sistema.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, dar de baja',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const token = obtenerToken();
+
+                try {
+                    const response = await fetch('/admin/productos/' + id, {
+                        method: 'DELETE',
+                        headers: {
+                            // 🔒 INYECTAMOS EL TOKEN REQUERIDO POR TU MIDDLEWARE
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.status === 401 || response.status === 403) {
+                        manejarSesionExpirada();
+                        return;
+                    }
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        Swal.fire({
+                            title: '¡Estado Actualizado!',
+                            text: data.message || 'El producto fue desactivado correctamente.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                        Swal.fire('Error del Servidor', data.message || 'No se pudo procesar la baja.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire('Error de Red', 'No se pudo conectar con el servidor.', 'error');
+                }
+            }
+        });
+    }
+
+    function manejarSesionExpirada() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Sesión inválida o expirada',
+            text: 'Por favor, logueate de nuevo.',
+            confirmButtonColor: '#0d6efd'
+        });
+        localStorage.removeItem('adminToken');
+        window.location.href = '/';
+    }
+</script>

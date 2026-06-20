@@ -1,8 +1,14 @@
 import sequelize from '../config/database.js';
-import {DataTypes} from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 const OrderDetail = sequelize.define('OrderDetail', {
-    saleId: {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false
+  },
+  orderId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },

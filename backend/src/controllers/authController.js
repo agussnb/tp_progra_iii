@@ -1,11 +1,12 @@
 import Admin from '../models/Admin.js';
-import { createHash, isValidPassword } from '../utils.js'; 
+import { createHash, isValidPassword } from '../utils.js';
+import jwt from 'jsonwebtoken'; 
+import Log from '../models/Logs.js';
 
 export const registerAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validación de campos vacíos
     if (!email || !password) {
       return res.status(400).json({ message: 'El email y la contraseña son obligatorios.' });
     }
@@ -20,7 +21,13 @@ export const registerAdmin = async (req, res) => {
       password: createHash(password) 
     });
 
-    return res.status(200).redirect('/');
+    await Log.create({
+      action: 'REGISTRO',
+      description: `Se registro un nuevo administrador en el sistema: ${email}`,
+      user: email
+    });
+
+    return res.status(200).json({ message: 'Administrador registrado con éxito.' });
   } catch (error) {
     return res.status(500).json({ message: 'Error al registrar el administrador.', error: error.message });
   }
@@ -31,32 +38,38 @@ export const loginAdmin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.redirect('/?error=' + encodeURIComponent('El email y la contraseña son obligatorios.'));
+      return res.status(400).json({ message: 'El email y la contraseña son obligatorios.' });
     }
 
     const admin = await Admin.findOne({ where: { email } });
-    if (!admin) {
-      return res.redirect('/?error=' + encodeURIComponent('Credenciales inválidas.'));
+    if (!admin || !isValidPassword(admin, password)) {
+      return res.status(401).json({ message: 'Credenciales inválidas.' });
     }
 
-    const isPasswordCorrect = isValidPassword(admin, password);
-    if (!isPasswordCorrect) {
-      return res.redirect('/?error=' + encodeURIComponent('Credenciales inválidas.'));
-    }
+    const token = jwt.sign(
+      { id: admin.id, email: admin.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '2h' }
+    );
 
-    req.session.user = {
-      id: admin.id,
-      name: admin.name,
-      email: admin.email
-    };
+    await Log.create({
+      action: 'LOGIN',
+      description: `El administrador inició sesión correctamente.`,
+      user: email 
+    });
 
-    return req.session.save(() => {
-      res.redirect('/admin/dashboard');
+    return res.status(200).json({
+      message: 'Inicio de sesión exitoso.',
+      token,
+      admin: {
+        id: admin.id,
+        email: admin.email
+      }
     });
 
   } catch (error) {
     console.error('Error en loginAdmin:', error);
-    return res.redirect('/?error=' + encodeURIComponent('Error interno del servidor al iniciar sesión.'));
+    return res.status(500).json({ message: 'Error interno del servidor al iniciar sesión.' });
   }
 };
 

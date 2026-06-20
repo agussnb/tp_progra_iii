@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+
+    <script>
+        if (!localStorage.getItem('adminToken')) {
+            window.location.href = '/';
+        }
+    </script>
+
+    <div class="w-64 bg-gray-800 text-white min-h-screen p-5 hidden md:block">
+        <h2 class="text-xl font-bold mb-6">Panel Admin</h2>
+        <nav class="space-y-2">
+            <a href="/admin/dashboard" class="block py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
+            <a href="/admin/productos" class="block py-2 px-4 rounded hover:bg-gray-700">Productos</a>
+            <a href="/admin/logs" class="block py-2 px-4 rounded bg-blue-600">Logs del Sistema</a>
+        </nav>
+    </div>
+
+    <main class="flex-1 p-8">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Registros del Sistema (Auditoría)</h1>
+
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-800 text-white text-sm uppercase">
+                        <tr>
+                            <th class="py-3 px-4">Fecha y Hora</th>
+                            <th class="py-3 px-4">Usuario</th>
+                            <th class="py-3 px-4">Acción</th>
+                            <th class="py-3 px-4">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-container" class="divide-y divide-gray-200 text-gray-700 text-sm">
+                        <tr>
+                            <td colspan="4" class="py-4 text-center text-gray-500">Cargando registros...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('adminToken');
+            const container = document.getElementById('logs-container');
+
+            try {
+                // Le pegamos al endpoint protegido pasándole el token en el Header
+                const response = await fetch('/admin/api/logs', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.status === 401 || response.status === 403) {
+                    localStorage.removeItem('adminToken');
+                    window.location.href = '/';
+                    return;
+                }
+
+                const logs = await response.json();
+                container.innerHTML = ''; // Limpiamos el mensaje de "Cargando..."
+
+                if (logs.length === 0) {
+                    container.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-gray-500">No hay registros de acciones todavía.</td></tr>`;
+                    return;
+                }
+
+                // Recorremos los registros recibidos y creamos las filas de la tabla
+                logs.forEach(log => {
+                    // Colores rápidos para identificar visualmente la acción
+                    let badgeColor = 'bg-gray-100 text-gray-800';
+                    if (log.action === 'CREAR') badgeColor = 'bg-green-100 text-green-800 font-semibold';
+                    if (log.action === 'MODIFICAR') badgeColor = 'bg-yellow-100 text-yellow-800 font-semibold';
+                    if (log.action === 'BORRAR') badgeColor = 'bg-red-100 text-red-800 font-semibold';
+
+                    const row = `
+                        <tr class="hover:bg-gray-50 transition duration-150">
+                            <td class="py-3 px-4 whitespace-nowrap text-gray-500">${log.createdAt}</td>
+                            <td class="py-3 px-4 font-medium">${log.user}</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2.5 py-1 rounded-full text-xs ${badgeColor}">
+                                    ${log.action}
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">${log.description}</td>
+                        </tr>
+                    `;
+                    container.innerHTML += row;
+                });
+
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudieron cargar los logs de auditoría.',
+                    confirmButtonColor: '#2563eb'
+                });
+            }
+        });
+    </script>
+</body>
+</html>
