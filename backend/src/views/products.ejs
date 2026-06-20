@@ -167,8 +167,6 @@
 
         const token = obtenerToken();
         const formData = new FormData(e.target);
-
-        // Ajuste manual por si en el backend usás "stock" en vez de "cantidad"
         if (formData.has('cantidad') && !formData.has('stock')) {
             formData.append('stock', formData.get('cantidad'));
         }
@@ -225,7 +223,6 @@
                     const response = await fetch('/admin/productos/' + id, {
                         method: 'DELETE',
                         headers: {
-                            // 🔒 INYECTAMOS EL TOKEN REQUERIDO POR TU MIDDLEWARE
                             'Authorization': `Bearer ${token}`
                         }
                     });
