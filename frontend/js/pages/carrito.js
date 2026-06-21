@@ -46,9 +46,14 @@ function renderizarCarrito() {
     const subtotal = item.precio * item.cantidad;
     total += subtotal;
     
+    let imagenUrl = item.imagen;
+    if (imagenUrl && imagenUrl.startsWith('/uploads')) {
+      imagenUrl = `http://localhost:3000${imagenUrl}`;
+    }
+    
     return `
       <div class="carrito-item" data-id="${item.id}">
-        <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-imagen">
+        <img src="${imagenUrl}" alt="${item.nombre}" class="carrito-item-imagen" onerror="this.src='https://placehold.co/280x250/gray/white?text=Error'">
         <div class="carrito-item-info">
           <h3 class="carrito-item-nombre">${item.nombre}</h3>
           <p class="carrito-item-precio">$${item.precio.toLocaleString()} c/u</p>
@@ -115,41 +120,112 @@ function eliminarItemCompleto(id) {
 }
 
 function vaciarCarrito() {
-  if (confirm('¿Estás seguro de que querés vaciar el carrito?')) {
-    guardarCarrito([]);
-    renderizarCarrito();
-    actualizarContadorFlotante();
-  }
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "Se van a remover todos los productos del carrito.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, vaciar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      guardarCarrito([]);
+      renderizarCarrito();
+      actualizarContadorFlotante();
+      Swal.fire({
+        title: '¡Vaciado!',
+        text: 'Tu carrito está limpio de nuevo.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
+  });
 }
 
-function finalizarCompra() {
+async function finalizarCompra() {
   const carrito = obtenerCarrito();
+  
   if (carrito.length === 0) {
-    alert('No hay productos en el carrito');
+    Swal.fire({
+      icon: 'error',
+      title: 'Carrito vacío',
+      text: 'No tenés ningún producto seleccionado para procesar la compra.',
+      confirmButtonColor: '#3085d6'
+    });
     return;
   }
-  
-  if (confirm('¿Confirmar compra?')) {
-    const nombreCliente = localStorage.getItem('nombreCliente') || 'Cliente';
-    const venta = {
-      cliente: nombreCliente,
-      fecha: new Date().toISOString(),
-      items: carrito,
-      total: carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0)
+
+  const confirmacion = await Swal.fire({
+    title: '¿Confirmar compra?',
+    text: "Vas a registrar esta transacción en el sistema.",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#28a745',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, confirmar compra',
+    cancelButtonText: 'Revisar carrito'
+  });
+
+  if (!confirmacion.isConfirmed) return;
+
+  Swal.fire({
+    title: 'Procesando venta...',
+    text: 'Asegurando stock y registrando logs.',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  try {
+    const nombreCliente = localStorage.getItem('nombreCliente') || 'Cliente General';
+
+    const payload = {
+      clientName: nombreCliente,
+      products: carrito.map(item => ({
+        id: item.id,
+        quantity: item.cantidad
+      }))
     };
-    
-    const ventas = localStorage.getItem('ventas');
-    const ventasArray = ventas ? JSON.parse(ventas) : [];
-    ventasArray.push(venta);
-    localStorage.setItem('ventas', JSON.stringify(ventasArray));
-    
+
+    const response = await fetch('http://localhost:3000/api/ventas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || data.message || 'Error desconocido al facturar.');
+    }
+
+    await Swal.fire({
+      icon: 'success',
+      title: '¡Venta procesada con éxito!',
+      text: 'El stock fue descontado y la operación quedó registrada.',
+      confirmButtonColor: '#28a745'
+    });
+
     guardarCarrito([]);
-    window.location.href = '/ticket.html';
+    window.location.href = 'ticket.html';
+
+  } catch (error) {
+    console.error('Error al impactar la API de ventas:', error);
+
+    Swal.fire({
+      icon: 'error',
+      title: 'No se pudo completar la venta',
+      text: error.message,
+      confirmButtonColor: '#d33'
+    });
   }
 }
-
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
   renderizarCarrito();
@@ -163,8 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('botonProductos')?.addEventListener('click', () => {
     window.location.href = 'grilla-productos.html';
   });
-  
-
 
   const botonTema = document.getElementById('botonTema');
   

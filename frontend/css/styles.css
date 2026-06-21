@@ -241,8 +241,8 @@ grilla-productos
 
 .grilla .producto-imagen {
   width: 100%;
-  height: 250px;
-  object-fit: cover;
+  height: 300px;
+  object-fit: contain; 
 }
 
 .grilla .producto-info {
@@ -401,7 +401,7 @@ grilla-productos
 
 .grilla .pagina-info {
   font-size: 1rem;
-  color: #333;
+  color: #fcf2f2;
 }
 
 
@@ -466,7 +466,7 @@ body.modo-oscuro .filtro-boton {
 
 
 body.modo-oscuro .pagina-info {
-  color: #eee;
+  color: #ffffff;
 }
 
 .grilla .btn-agregar-carrito {
@@ -598,7 +598,7 @@ carrito
 .carrito-vacio {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
-  color: var(--text-color);
+  color:#ffff
 }
 
 .btn-seguir-comprando {

@@ -4,7 +4,7 @@ import { createSale, getSales } from '../controllers/saleController.js';
 
 const router = Router();
 
-router.post('/', verifyToken, createSale);
+router.post('/',createSale);
 
 router.get('/', verifyToken, getSales);
 

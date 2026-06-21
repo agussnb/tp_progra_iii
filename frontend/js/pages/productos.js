@@ -1,43 +1,66 @@
-//array con productos (prueba)
-const productos = [
-  { id: 1, nombre: "Spider-Man: Miles Morales", precio: 8900, imagen: "https://placehold.co/280x250/red/white?text=Spider-Man", categoria: "marvel", activo: true },
-  { id: 2, nombre: "Avengers: Endgame", precio: 12500, imagen: "https://placehold.co/280x250/red/white?text=Avengers", categoria: "marvel", activo: true },
-  { id: 3, nombre: "X-Men: Días del futuro pasado", precio: 9800, imagen: "https://placehold.co/280x250/red/white?text=X-Men", categoria: "marvel", activo: true },
-  { id: 4, nombre: "Deadpool", precio: 7500, imagen: "https://placehold.co/280x250/red/white?text=Deadpool", categoria: "marvel", activo: true },
-  { id: 5, nombre: "Captain America: Civil War", precio: 11200, imagen: "https://placehold.co/280x250/red/white?text=Captain+America", categoria: "marvel", activo: true },
-  { id: 6, nombre: "Thor: Ragnarok", precio: 10200, imagen: "https://placehold.co/280x250/red/white?text=Thor", categoria: "marvel", activo: true },
-  { id: 7, nombre: "Black Panther", precio: 9500, imagen: "https://placehold.co/280x250/red/white?text=Black+Panther", categoria: "marvel", activo: true },
-  { id: 8, nombre: "Iron Man: Extremis", precio: 8800, imagen: "https://placehold.co/280x250/red/white?text=Iron+Man", categoria: "marvel", activo: true },
+// array con productos (prueba / respaldo si el backend falla)
+const productosMock = [
+  { id: 1, name: "Spider-Man: Miles Morales", price: 8900, image: "https://placehold.co/280x250/red/white?text=Spider-Man", category: "marvel", active: true },
+  { id: 2, name: "Avengers: Endgame", price: 12500, image: "https://placehold.co/280x250/red/white?text=Avengers", category: "marvel", active: true },
+  { id: 3, name: "X-Men: Días del futuro pasado", price: 9800, image: "https://placehold.co/280x250/red/white?text=X-Men", category: "marvel", active: true },
+  { id: 4, name: "Deadpool", price: 7500, image: "https://placehold.co/280x250/red/white?text=Deadpool", category: "marvel", active: true },
+  { id: 5, name: "Captain America: Civil War", price: 11200, image: "https://placehold.co/280x250/red/white?text=Captain+America", category: "marvel", active: true },
+  { id: 6, name: "Thor: Ragnarok", price: 10200, image: "https://placehold.co/280x250/red/white?text=Thor", category: "marvel", active: true },
+  { id: 7, name: "Black Panther", price: 9500, image: "https://placehold.co/280x250/red/white?text=Black+Panther", category: "marvel", active: true },
+  { id: 8, name: "Iron Man: Extremis", price: 8800, image: "https://placehold.co/280x250/red/white?text=Iron+Man", category: "marvel", active: true },
   
-  { id: 9, nombre: "Batman: Año Uno", precio: 8500, imagen: "https://placehold.co/280x250/blue/white?text=Batman", categoria: "dc", activo: true },
-  { id: 10, nombre: "Watchmen", precio: 9500, imagen: "https://placehold.co/280x250/blue/white?text=Watchmen", categoria: "dc", activo: true },
-  { id: 11, nombre: "The Sandman", precio: 12500, imagen: "https://placehold.co/280x250/blue/white?text=Sandman", categoria: "dc", activo: true },
-  { id: 12, nombre: "V de Vendetta", precio: 7800, imagen: "https://placehold.co/280x250/blue/white?text=V+de+Vendetta", categoria: "dc", activo: true },
-  { id: 13, nombre: "Superman: Red Son", precio: 9200, imagen: "https://placehold.co/280x250/blue/white?text=Superman", categoria: "dc", activo: true },
-  { id: 14, nombre: "Joker: Killer Smile", precio: 6800, imagen: "https://placehold.co/280x250/blue/white?text=Joker", categoria: "dc", activo: true },
-  { id: 15, nombre: "Flash: Flashpoint", precio: 8900, imagen: "https://placehold.co/280x250/blue/white?text=Flash", categoria: "dc", activo: true },
-  { id: 16, nombre: "Wonder Woman: The Hiketeia", precio: 9300, imagen: "https://placehold.co/280x250/blue/white?text=Wonder+Woman", categoria: "dc", activo: true }
+  { id: 9, name: "Batman: Año Uno", price: 8500, image: "https://placehold.co/280x250/blue/white?text=Batman", category: "dc", active: true },
+  { id: 10, name: "Watchmen", price: 9500, image: "https://placehold.co/280x250/blue/white?text=Watchmen", category: "dc", active: true },
+  { id: 11, name: "The Sandman", price: 12500, image: "https://placehold.co/280x250/blue/white?text=Sandman", category: "dc", active: true },
+  { id: 12, name: "V de Vendetta", price: 7800, image: "https://placehold.co/280x250/blue/white?text=V+de+Vendetta", category: "dc", active: true },
+  { id: 13, name: "Superman: Red Son", price: 9200, image: "https://placehold.co/280x250/blue/white?text=Superman", category: "dc", active: true },
+  { id: 14, name: "Joker: Killer Smile", price: 6800, image: "https://placehold.co/280x250/blue/white?text=Joker", category: "dc", active: true },
+  { id: 15, name: "Flash: Flashpoint", price: 8900, image: "https://placehold.co/280x250/blue/white?text=Flash", category: "dc", active: true },
+  { id: 16, name: "Wonder Woman: The Hiketeia", price: 9300, image: "https://placehold.co/280x250/blue/white?text=Wonder+Woman", category: "dc", active: true }
 ];
 
 let paginaActual = 1;
 let categoriaActual = 'todos';
-const productosPorPagina = 8;
+const productosPorPagina = 6; 
+const BACKEND_URL = 'http://localhost:3000/api/productos';
 
-function obtenerProductos() {
-  let filtrados = productos.filter(p => p.activo === true);
-  
-  if (categoriaActual !== 'todos') {
-    filtrados = filtrados.filter(p => p.categoria === categoriaActual);
+async function obtenerProductos() {
+  try {
+    const response = await fetch(`${BACKEND_URL}?page=${paginaActual}`);
+    
+    if (!response.ok) {
+      throw new Error('La respuesta del servidor no fue correcta');
+    }
+    
+    const data = await response.json();
+    
+    let listaProductos = data.products || [];
+    if (categoriaActual !== 'todos') {
+      listaProductos = listaProductos.filter(p => p.category === categoriaActual || p.categoria === categoriaActual);
+    }
+
+    return {
+      productos: listaProductos,
+      totalPaginas: data.totalPages || 1
+    };
+
+  } catch (error) {
+    console.warn('No se pudo conectar al backend, usando datos mockeados:', error.message);
+    
+    let filtrados = productosMock.filter(p => p.active === true);
+    
+    if (categoriaActual !== 'todos') {
+      filtrados = filtrados.filter(p => p.category === categoriaActual);
+    }
+    
+    const inicio = (paginaActual - 1) * productosPorPagina;
+    const fin = inicio + productosPorPagina;
+    
+    return {
+      productos: filtrados.slice(inicio, fin),
+      totalPaginas: Math.ceil(filtrados.length / productosPorPagina)
+    };
   }
-  
-  const inicio = (paginaActual - 1) * productosPorPagina;
-  const fin = inicio + productosPorPagina;
-  
-  return {
-    productos: filtrados.slice(inicio, fin),
-    total: filtrados.length,
-    totalPaginas: Math.ceil(filtrados.length / productosPorPagina)
-  };
 }
 
 function actualizarContadorCarrito() {
@@ -56,8 +79,17 @@ function actualizarContadorCarrito() {
 }
 
 function agregarAlCarrito(producto, cantidad) {
+  const nombreProd = producto.name || producto.nombre;
+  const precioProd = producto.price || producto.precio;
+  const imagenProd = producto.image || producto.imagen;
+
   if (cantidad <= 0) {
-    alert(`Seleccioná una cantidad para "${producto.nombre}"`);
+    Swal.fire({
+      icon: 'warning',
+      title: 'Cantidad inválida',
+      text: `Por favor, seleccioná una cantidad mayor a 0 para "${nombreProd}"`,
+      confirmButtonColor: '#3085d6'
+    });
     return false;
   }
   
@@ -65,15 +97,15 @@ function agregarAlCarrito(producto, cantidad) {
   carrito = carrito ? JSON.parse(carrito) : [];
   
   const existeIndex = carrito.findIndex(item => item.id === producto.id);
-  
+
   if (existeIndex !== -1) {
     carrito[existeIndex].cantidad += cantidad;
   } else {
     carrito.push({
       id: producto.id,
-      nombre: producto.nombre,
-      precio: producto.precio,
-      imagen: producto.imagen,
+      nombre: nombreProd,
+      precio: precioProd,
+      imagen: imagenProd,
       cantidad: cantidad
     });
   }
@@ -89,14 +121,26 @@ function agregarAlCarrito(producto, cantidad) {
     }, 10);
   }
   
-  alert(`Agregado "${producto.nombre}" x ${cantidad} cant. al carrito`);
+  Swal.fire({
+    icon: 'success',
+    title: '¡Agregado al carrito!',
+    text: `"${nombreProd}" x ${cantidad} unidad(es)`,
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 2500,
+    timerProgressBar: true
+  });
+
   return true;
 }
 
-function renderizarProductos() {
-  const { productos: productosPagina, totalPaginas } = obtenerProductos();
+async function renderizarProductos() {
+  const { productos: productosPagina, totalPaginas } = await obtenerProductos();
   const grid = document.getElementById('productosGrid');
   
+  if (!grid) return;
+
   if (productosPagina.length === 0) {
     grid.innerHTML = '<div class="no-productos">No hay productos en esta categoría</div>';
     document.getElementById('botonAnterior').disabled = true;
@@ -110,25 +154,36 @@ function renderizarProductos() {
     cantidades[producto.id] = 0;
   });
   
-  grid.innerHTML = productosPagina.map(producto => `
-    <div class="producto-card" data-id="${producto.id}">
-      <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-imagen" onerror="this.src='https://placehold.co/280x250/gray/white?text=Error'">
-      <div class="producto-info">
-        <h3 class="producto-nombre">${producto.nombre}</h3>
-        <p class="producto-precio">$${producto.precio.toLocaleString()}</p>
-        <div class="producto-cantidad">
-          <button class="cantidad-boton menos" data-id="${producto.id}">-</button>
-          <span class="cantidad-valor" id="cant-${producto.id}">${cantidades[producto.id]}</span>
-          <button class="cantidad-boton mas" data-id="${producto.id}">+</button>
+  grid.innerHTML = productosPagina.map(producto => {
+    const id = producto.id;
+    const nombre = producto.name || producto.nombre;
+    const precio = producto.price || producto.precio;
+    let imagen = producto.image || producto.imagen;
+
+    if (imagen && imagen.startsWith('/uploads')) {
+      imagen = `http://localhost:3000${imagen}`;
+    }
+
+    return `
+      <div class="producto-card" data-id="${id}">
+        <img src="${imagen}" alt="${nombre}" class="producto-imagen" onerror="this.src='https://placehold.co/280x250/gray/white?text=Error'">
+        <div class="producto-info">
+          <h3 class="producto-nombre">${nombre}</h3>
+          <p class="producto-precio">$${precio.toLocaleString()}</p>
+          <div class="producto-cantidad">
+            <button class="cantidad-boton menos" data-id="${id}">-</button>
+            <span class="cantidad-valor" id="cant-${id}">${cantidades[id]}</span>
+            <button class="cantidad-boton mas" data-id="${id}">+</button>
+          </div>
+          <button class="btn-agregar-carrito" data-id="${id}">🛒 Agregar al carrito</button>
         </div>
-        <button class="btn-agregar-carrito" data-id="${producto.id}">🛒 Agregar al carrito</button>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
   
   document.getElementById('paginaInfo').textContent = `Página ${paginaActual} de ${totalPaginas}`;
   document.getElementById('botonAnterior').disabled = paginaActual === 1;
-  document.getElementById('botonSiguiente').disabled = paginaActual === totalPaginas;
+  document.getElementById('botonSiguiente').disabled = paginaActual >= totalPaginas;
   
   productosPagina.forEach(producto => {
     const cantidadSpan = document.getElementById(`cant-${producto.id}`);
@@ -139,6 +194,7 @@ function renderizarProductos() {
       botonMenos.addEventListener('click', () => {
         if (cantidad > 0) {
           cantidad--;
+          whitespace = "";
           cantidadSpan.textContent = cantidad;
         }
       });
@@ -160,15 +216,20 @@ function renderizarProductos() {
           cantidad = 0;
           cantidadSpan.textContent = 0;
         } else {
-          alert(`Seleccioná una cantidad para "${producto.nombre}"`);
+          Swal.fire({
+            icon: 'warning',
+            title: '¡Atención!',
+            text: `Seleccioná una cantidad para "${producto.name || producto.nombre}" antes de agregar.`,
+            confirmButtonColor: '#3085d6'
+          });
         }
       });
     }
   });
 }
 
-function paginaSiguiente() {
-  const { totalPaginas } = obtenerProductos();
+async function paginaSiguiente() {
+  const { totalPaginas } = await obtenerProductos();
   if (paginaActual < totalPaginas) {
     paginaActual++;
     renderizarProductos();
@@ -217,14 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'carrito.html';
   });
   
-  
   const carritoFlotante = document.getElementById('carritoFlotante');
   if (carritoFlotante) {
     carritoFlotante.addEventListener('click', () => {
       window.location.href = 'carrito.html';
     });
   }
-    const botonTema = document.getElementById('botonTema');
+
+  const botonTema = document.getElementById('botonTema');
   function aplicarTema(tema) {
     if (tema === 'dark') {
       document.body.classList.add('modo-oscuro');
@@ -251,4 +312,3 @@ document.addEventListener('DOMContentLoaded', () => {
   
   cargarTema();
 });
-
