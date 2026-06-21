@@ -12,12 +12,11 @@
     <div class="logo">
       <span class="logo-text">COMICMUNDO</span>
     </div>
-    
     <div class="nav-links">
-      <button id="botonAdmin" class="nav-boton nav-boton-admin">🔐 ADMIN</button>
-      <button id="botonTema" class="nav-boton nav-boton-tema">🌙 MODO OSCURO</button>
+      <button id="botonTema" class="nav-boton nav-boton-tema"></button>
     </div>
   </nav>
+
   <main class="main-content">
     <div class="bienvenida-container">
       <div class="bienvenida-card">
@@ -27,13 +26,21 @@
         <div class="bienvenida-form">
           <input type="text" id="nombreInput" class="nombre-input" 
                  placeholder="Tu nombre" maxlength="50" autocomplete="off">
-          <button id="continuarBoton" class="continuar-boton" disabled>Continuar</button>
+          <button id="continuarBtn" class="continuar-boton" disabled>Continuar</button>
         </div>
+
+        <div class="admin-container">
+          <button id="botonAdmin" class="admin-boton">🔐 Administrador</button>
+        </div>
+
       </div>
     </div>
   </main>
+
   <footer class="footer">
     <p>Ivan Klimkowski - Agustín Barrero</p>
   </footer>
+
+  <script type="module" src="js/pages/index.js"></script>
 </body>
 </html>

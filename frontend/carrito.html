@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMICMUNDO - Carrito</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+</head>
+<body class="carrito-page">
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-text">COMICMUNDO</span>
+    </div>
+    <div class="nav-links">
+      <button id="botonProductos" class="nav-boton">Productos</button>
+      <button id="botonTema" class="nav-boton nav-boton-tema">🌙</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="carrito-container">
+      
+      <!-- CONTENEDOR BLANCO PARA "TU CARRITO" -->
+      <div class="carrito-header-container">
+        <div class="carrito-header">
+          <h1 class="carrito-titulo">🛒 Tu Carrito:</h1>
+        </div>
+      </div>
+      
+      <div id="carritoVacio" class="carrito-vacio" style="display: none;">
+        <p>No hay productos en el carrito</p>
+        <button id="seguirComprandoBtn" class="btn-seguir-comprando">Seguir comprando</button>
+      </div>
+      
+      <div id="carritoLleno">
+        <div id="carritoItems" class="carrito-items">
+        </div>
+        
+        <div class="carrito-resumen">
+          <div class="carrito-total">
+            <span>Total:</span>
+            <span id="totalCarrito">$0</span>
+          </div>
+          <div class="carrito-acciones">
+            <button id="vaciarCarritoBtn" class="btn-vaciar">Vaciar carrito</button>
+            <button id="finalizarCompraBtn" class="btn-finalizar">Finalizar compra</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Ivan Klimkowski - Agustín Barrero</p>
+  </footer>
+
+  <script type="module" src="js/pages/carrito.js"></script>
+</body>
+</html>
