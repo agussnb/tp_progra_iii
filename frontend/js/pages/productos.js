@@ -274,6 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (botonTema) botonTema.textContent = '🌙 Modo oscuro';
     }
   }
+
+  document.getElementById('botonInicio')?.addEventListener('click', () => {
+  window.location.href = 'index.html';
+  });
   
   function cargarTema() {
     const temaGuardado = localStorage.getItem('tema');
