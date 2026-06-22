@@ -1,6 +1,11 @@
 /* ============================================
 index (bienvenida)
 ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
   --bg-color: #f5f5f5;
@@ -221,9 +226,10 @@ grilla-productos
 ============================================ */
 .grilla .productos-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  justify-content: start;  
 }
 
 .grilla .producto-card {
@@ -232,6 +238,10 @@ grilla-productos
   overflow: hidden;
   transition: all 0.3s ease;
   border: 1px solid #e0e0e0;
+  max-width: 280px;  
+  width: 100%;
+  justify-self: start;  
+
 }
 
 .grilla .producto-card:hover {
@@ -709,7 +719,7 @@ carrito
 .carrito-acciones {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .btn-finalizar {
@@ -730,6 +740,53 @@ carrito
   cursor: pointer;
 }
 
+
+body.modo-oscuro .carrito-titulo {
+  color: white;
+}
+
+body.modo-oscuro .carrito-item-nombre {
+  color: white;
+}
+
+body.modo-oscuro .carrito-cantidad-valor {
+  color: white;
+}
+
+body.modo-oscuro .carrito-item-precio {
+  color: #4ade80;  
+}
+
+body.modo-oscuro .carrito-item-subtotal {
+  color: #4ade80; 
+}
+
+body.modo-oscuro .carrito-total {
+  color: white;
+}
+
+body.modo-oscuro .carrito-total span:last-child {
+  color: #4ade80;  
+}
+
+body.modo-oscuro .carrito-vacio p {
+  color: white;
+}
+
+body.modo-oscuro .carrito-resumen {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+body.modo-oscuro .carrito-header-container {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+body.modo-oscuro .carrito-header {
+  border-bottom-color: #4ade80; 
+}
+
 @media (max-width: 768px) {
   .carrito-item {
     flex-direction: column;
@@ -741,7 +798,7 @@ carrito
   }
   
   .carrito-acciones {
-    flex-direction: column;
+    flex-direction: center;
   }
   
   .btn-vaciar, .btn-finalizar {
@@ -749,22 +806,3 @@ carrito
   }
 }
 
-
-@media (max-width: 768px) {
-  .carrito-item {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .carrito-item-cantidad {
-    justify-content: center;
-  }
-  
-  .carrito-acciones {
-    flex-direction: column;
-  }
-  
-  .btn-vaciar, .btn-finalizar {
-    width: 100%;
-  }
-}
