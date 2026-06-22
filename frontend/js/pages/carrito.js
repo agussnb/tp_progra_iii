@@ -112,11 +112,24 @@ function modificarCantidad(id, cambio) {
 }
 
 function eliminarItemCompleto(id) {
-  const carrito = obtenerCarrito();
-  const nuevoCarrito = carrito.filter(item => item.id !== id);
-  guardarCarrito(nuevoCarrito);
-  renderizarCarrito();
-  actualizarContadorFlotante();
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "Se va a remover este producto del carrito.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const carrito = obtenerCarrito();        
+      const nuevoCarrito = carrito.filter(item => item.id !== id);
+      guardarCarrito(nuevoCarrito);
+      renderizarCarrito();
+      actualizarContadorFlotante();
+    }
+  });
 }
 
 function vaciarCarrito() {
@@ -251,6 +264,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (botonTema) botonTema.textContent = '🌙 Modo oscuro';
     }
   }
+
+  document.getElementById('botonInicio')?.addEventListener('click', () => {
+  window.location.href = 'index.html';
+  });
   
   function cargarTema() {
     const temaGuardado = localStorage.getItem('tema');
