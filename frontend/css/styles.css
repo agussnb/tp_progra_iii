@@ -806,3 +806,146 @@ body.modo-oscuro .carrito-header {
   }
 }
 
+/* ============================================
+ticket
+============================================ */
+.ticket-container {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.ticket-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.ticket-header {
+  text-align: center;
+  border-bottom: 2px dashed var(--border-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ticket-header h1 {
+  font-family: 'Inter', -apple-system, Roboto, sans-serif;
+  font-size: 2rem;
+  color: #000000;
+  margin-bottom: 0.5rem;
+}
+
+.ticket-fecha {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.ticket-cliente {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.ticket-items {
+  margin-bottom: 1.5rem;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #eee;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ticket-item-nombre {
+  font-weight: 500;
+  flex: 2;
+  color: var(--text-color);
+}
+
+.ticket-item-cantidad {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.ticket-item-subtotal {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.ticket-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.4rem;
+  padding-top: 1rem;
+  border-top: 3px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.ticket-total span:last-child {
+  color: #000000;
+}
+
+.ticket-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #999;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.ticket-footer p {
+  margin: 0.25rem 0;
+}
+
+.ticket-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-pdf {
+  padding: 12px 24px;
+  background-color: #e62429;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-pdf:hover {
+  background-color: #c41e24;
+  transform: scale(1.02);
+}
+
+.btn-inicio {
+  padding: 12px 24px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-inicio:hover {
+  background-color: #5a6268;
+  transform: scale(1.02);
+}
+
+.ticket-vacio {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color);
+}

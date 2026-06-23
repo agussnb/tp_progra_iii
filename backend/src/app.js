@@ -13,6 +13,8 @@ import authRouter from './routes/auth.router.js';
 import adminRouter from './routes/admin.router.js';
 import productRouter from './routes/product.router.js';
 import saleRouter from './routes/sale.router.js';
+import ticketRouter from './routes/ticket.router.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,6 +50,8 @@ app.use('/', authRouter);
 app.use('/admin', adminRouter);
 app.use('/api/productos', productRouter);
 app.use('/api/ventas', saleRouter);
+app.use('/api/ticket', ticketRouter);
+
 
 async function testConnection() {
     try {

@@ -195,7 +195,6 @@ async function finalizarCompra() {
 
   try {
     const nombreCliente = localStorage.getItem('nombreCliente') || 'Cliente General';
-
     const payload = {
       clientName: nombreCliente,
       products: carrito.map(item => ({
@@ -212,20 +211,17 @@ async function finalizarCompra() {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.error || data.message || 'Error desconocido al facturar.');
+      throw new Error('Error al procesar la venta');
     }
 
     await Swal.fire({
       icon: 'success',
       title: '¡Venta procesada con éxito!',
-      text: 'El stock fue descontado y la operación quedó registrada.',
-      confirmButtonColor: '#28a745'
+      timer: 1500,
+      showConfirmButton: false
     });
 
-    guardarCarrito([]);
     window.location.href = 'ticket.html';
 
   } catch (error) {

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const nombre = nombreInput.value.trim();
       if (nombre) {
         localStorage.setItem('nombreCliente', nombre);
+        localStorage.removeItem('carrito');
         window.location.href = 'grilla-productos.html';
       }
     });
