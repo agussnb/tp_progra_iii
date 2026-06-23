@@ -23,67 +23,72 @@
                             </span>
                         </div>
 
-                        <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light sticky-top">
-                                    <tr>
-                                        <th scope="col" class="px-3 py-3">Producto</th>
-                                        <th scope="col" class="py-3">Precio</th>
-                                        <th scope="col" class="py-3">Cantidad</th>
-                                        <th scope="col" class="py-3">Estado</th>
-                                        <th scope="col" class="py-3 text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% if (products && products.length > 0) { %>
-                                        <% products.forEach(producto => { %>
-                                            <tr>
-                                                <td class="px-3 py-3 font-medium">
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <img src="<%= producto.image || '/img/placeholder.png' %>"
-                                                            alt="<%= producto.name %>"
-                                                            class="rounded object-fit-cover border"
-                                                            style="width: 45px; height: 45px;">
-                                                        <span class="fw-semibold text-dark">
-                                                            <%= producto.name %>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td class="fw-bold text-dark">
-                                                    $<%= Number(producto.price).toLocaleString('es-AR') %>
-                                                </td>
-                                                <td>
-                                                    <span class="<%= producto.cantidad <= 5 ? 'text-danger fw-bold' : 'text-muted' %>">
-                                                        <%= producto.stock %> u.
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <% if (producto.active) { %>
-                                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5">Activo</span>
-                                                    <% } else { %>
-                                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2.5">Inactivo</span>
-                                                    <% } %>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="d-flex justify-content-center gap-2">
-                                                        <a href="/admin/productos/<%= producto.id %>" class="btn btn-sm btn-success d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1.5 fw-medium">
-                                                            <i class="bi bi-pencil-square"></i> Modificar
-                                                        </a>
-                                                        <button onclick="eliminarProducto('<%= producto.id %>', '<%= producto.name %>')" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1.5 fw-medium">
-                                                            <i class="bi bi-trash"></i> Eliminar
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="5" class="text-center py-5 text-muted">
-                                                <i class="bi bi-box-seam display-6 d-block mb-3 text-light"></i>
-                                                No hay productos registrados en este momento.
-                                            </td>
-                                        </tr>
-                                    <% } %>
+<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light sticky-top">
+            <tr>
+                <th scope="col" class="px-3 py-3">Producto</th>
+                <th scope="col" class="py-3">Precio</th>
+                <th scope="col" class="py-3">Cantidad</th>
+                <th scope="col" class="py-3">Editorial</th>  <!-- ← Después de Cantidad -->
+                <th scope="col" class="py-3">Estado</th>
+                <th scope="col" class="py-3 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (products && products.length > 0) { %>
+                <% products.forEach(producto => { %>
+                    <tr>
+                        <td class="px-3 py-3 font-medium">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="<%= producto.image || '/img/placeholder.png' %>"
+                                    alt="<%= producto.name %>"
+                                    class="rounded object-fit-cover border"
+                                    style="width: 45px; height: 45px;">
+                                <span class="fw-semibold text-dark"><%= producto.name %></span>
+                            </div>
+                        </td>
+                        <td class="fw-bold text-dark">
+                            $<%= Number(producto.price).toLocaleString('es-AR') %>
+                        </td>
+                        <td>
+                            <span class="<%= producto.stock <= 5 ? 'text-danger fw-bold' : 'text-muted' %>">
+                                <%= producto.stock %> u.
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge <%= producto.category === 'Marvel' ? 'bg-danger' : producto.category === 'DC' ? 'bg-primary' : 'bg-secondary' %>">
+                                <%= producto.category || 'Sin categoría' %>
+                            </span>
+                        </td>
+
+                        <td>
+                            <% if (producto.active) { %>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5">Activo</span>
+                            <% } else { %>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2.5">Inactivo</span>
+                            <% } %>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="/admin/productos/<%= producto.id %>" class="btn btn-sm btn-success d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1.5 fw-medium">
+                                    <i class="bi bi-pencil-square"></i> Modificar
+                                </a>
+                                <button onclick="eliminarProducto('<%= producto.id %>', '<%= producto.name %>')" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 shadow-sm px-2.5 py-1.5 fw-medium">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">
+                        <i class="bi bi-box-seam display-6 d-block mb-3 text-light"></i>
+                        No hay productos registrados en este momento.
+                        </td>
+                        </tr>
+                        <% } %>
                                 </tbody>
                             </table>
                         </div>
