@@ -1,3 +1,23 @@
+const productosMock = [
+  { id: 1, name: "Spider-Man: Miles Morales", price: 8900, image: "https://placehold.co/280x250/red/white?text=Spider-Man", category: "marvel", active: true },
+  { id: 2, name: "Avengers: Endgame", price: 12500, image: "https://placehold.co/280x250/red/white?text=Avengers", category: "marvel", active: true },
+  { id: 3, name: "X-Men: Días del futuro pasado", price: 9800, image: "https://placehold.co/280x250/red/white?text=X-Men", category: "marvel", active: true },
+  { id: 4, name: "Deadpool", price: 7500, image: "https://placehold.co/280x250/red/white?text=Deadpool", category: "marvel", active: true },
+  { id: 5, name: "Captain America: Civil War", price: 11200, image: "https://placehold.co/280x250/red/white?text=Captain+America", category: "marvel", active: true },
+  { id: 6, name: "Thor: Ragnarok", price: 10200, image: "https://placehold.co/280x250/red/white?text=Thor", category: "marvel", active: true },
+  { id: 7, name: "Black Panther", price: 9500, image: "https://placehold.co/280x250/red/white?text=Black+Panther", category: "marvel", active: true },
+  { id: 8, name: "Iron Man: Extremis", price: 8800, image: "https://placehold.co/280x250/red/white?text=Iron+Man", category: "marvel", active: true },
+  
+  { id: 9, name: "Batman: Año Uno", price: 8500, image: "https://placehold.co/280x250/blue/white?text=Batman", category: "dc", active: true },
+  { id: 10, name: "Watchmen", price: 9500, image: "https://placehold.co/280x250/blue/white?text=Watchmen", category: "dc", active: true },
+  { id: 11, name: "The Sandman", price: 12500, image: "https://placehold.co/280x250/blue/white?text=Sandman", category: "dc", active: true },
+  { id: 12, name: "V de Vendetta", price: 7800, image: "https://placehold.co/280x250/blue/white?text=V+de+Vendetta", category: "dc", active: true },
+  { id: 13, name: "Superman: Red Son", price: 9200, image: "https://placehold.co/280x250/blue/white?text=Superman", category: "dc", active: true },
+  { id: 14, name: "Joker: Killer Smile", price: 6800, image: "https://placehold.co/280x250/blue/white?text=Joker", category: "dc", active: true },
+  { id: 15, name: "Flash: Flashpoint", price: 8900, image: "https://placehold.co/280x250/blue/white?text=Flash", category: "dc", active: true },
+  { id: 16, name: "Wonder Woman: The Hiketeia", price: 9300, image: "https://placehold.co/280x250/blue/white?text=Wonder+Woman", category: "dc", active: true }
+];
+
 let paginaActual = 1;
 let categoriaActual = 'todos';
 const productosPorPagina = 8; 
