@@ -198,7 +198,6 @@ async function renderizarProductos() {
       botonMenos.addEventListener('click', () => {
         if (cantidad > 0) {
           cantidad--;
-          whitespace = "";
           cantidadSpan.textContent = cantidad;
         }
       });
