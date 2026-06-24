@@ -40,7 +40,7 @@ export const createProduct = async (req, res) => {
     const newProduct = await Product.create({
       name: nombre,
       price: parseFloat(precio),
-      category: categoria, // O 'category' si tu modelo usa inglés
+      category: categoria, 
       image: rutaImagen,
       stock: parseInt(stock) || 0,
       active: true 
@@ -75,7 +75,7 @@ export const updateProduct = async (req, res) => {
       name: name || product.name,
       price: price ? parseFloat(price) : product.price,
       stock: stock !== undefined ? parseInt(stock) : product.stock,
-      category: categoria || product.category, // O 'category' según tu modelo
+      category: categoria || product.category, 
       image: nuevaImagen,
       active: active === 'true' || active === true
     });

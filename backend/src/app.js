@@ -55,21 +55,14 @@ app.use('/api/ticket', ticketRouter);
 
 async function testConnection() {
     try {
-        // 1. Autentica las credenciales del .env contra MySQL
         await sequelize.authenticate();
-        console.log('✅ Conexión a la base de datos establecida correctamente.');
-
-        // 2. Sincroniza los modelos (Crea las tablas si no existen en tu schema tp_progra3)
-        // Usamos { alter: true } para que si agregás columnas después, se actualicen solas sin borrar datos
-        // await sequelize.sync({ force: true }); 
-        // console.log('🔄 Tablas reseteadas y sincronizadas limpiamente.');
+        console.log('Conexión a la base de datos establecida correctamente.');
         await sequelize.sync({ alter: true });
-        console.log('🔄 Modelos de Sequelize sincronizados con la base de datos.');
+        console.log('Modelos de Sequelize sincronizados con la base de datos.');
 
     } catch (error) {
-        console.error('❌ No se pudo conectar a la base de datos:');
+        console.error('No se pudo conectar a la base de datos:');
         console.error(error.message); 
-        // Si la contraseña está mal, acá te va a decir: "Access denied for user 'root'@'localhost' (using password: YES)"
     }
 }
 testConnection();
