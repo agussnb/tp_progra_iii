@@ -34,8 +34,11 @@ async function obtenerProductos() {
     const data = await response.json();
     
     let listaProductos = data.products || [];
+    
     if (categoriaActual !== 'todos') {
-      listaProductos = listaProductos.filter(p => p.category === categoriaActual || p.categoria === categoriaActual);
+      listaProductos = listaProductos.filter(p => 
+        (p.category || p.categoria || '').toLowerCase() === categoriaActual.toLowerCase()
+      );
     }
 
     return {
@@ -49,7 +52,9 @@ async function obtenerProductos() {
     let filtrados = productosMock.filter(p => p.active === true);
     
     if (categoriaActual !== 'todos') {
-      filtrados = filtrados.filter(p => p.category === categoriaActual);
+      filtrados = filtrados.filter(p => 
+        (p.category || p.categoria || '').toLowerCase() === categoriaActual.toLowerCase()
+      );
     }
     
     const inicio = (paginaActual - 1) * productosPorPagina;
@@ -243,7 +248,7 @@ function paginaAnterior() {
 }
 
 function cambiarCategoria(categoria) {
-  categoriaActual = categoria;
+  categoriaActual = categoria.toLowerCase();
   paginaActual = 1;
   renderizarProductos();
   
