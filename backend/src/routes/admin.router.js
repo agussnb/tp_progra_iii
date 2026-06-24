@@ -19,10 +19,10 @@ import upload from '../middlewares/multerConfig.js';
 
 const router = Router();
 
-router.get('/dashboard', getDashboard); 
-router.get('/logs', getLogsView); 
-router.get('/productos', getProductsView); 
-router.get('/productos/:id', getUpdateView); // Muestra el formulario de edición
+router.get('/dashboard',verifyToken,getDashboard); 
+router.get('/logs', verifyToken,getLogsView); 
+router.get('/productos', verifyToken,getProductsView); 
+router.get('/productos/:id',verifyToken, getUpdateView); 
 
 router.get('/api/logs', verifyToken, getLogs);
 

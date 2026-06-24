@@ -4,7 +4,7 @@ import Log from '../models/Logs.js';
 export const getProducts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 8;
+    const limit = 6;
     const offset = (page - 1) * limit;
     
     const { count, rows } = await Product.findAndCountAll({
